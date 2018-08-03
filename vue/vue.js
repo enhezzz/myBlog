@@ -29,10 +29,16 @@ function observe(originObj) {
 
 function render(el, data) {
     let root = document.querySelector(el);
-    let childNodes = root.childNodes;
+    let child;
+    let fragment = document.createDocumentFragment();      //减少dom操作
+    while(child = root.firstChild){
+        fragment.appendChild(child)
+    }
+    let childNodes = fragment.childNodes;
     Array.prototype.slice.call(childNodes).forEach((child, index, childs) => {
         compile(child, data);
     })
+    root.appendChild(fragment)
 }
 
 function defineReactive(originObj, key, value) {
